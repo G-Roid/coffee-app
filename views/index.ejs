@@ -19,13 +19,22 @@
 </head>
 <body>
     <h1>Coffee</h1>
-    <ul class="rappers">
+    <ul class="coffeeShops">
+        <% for(let i=0; i < info.length; i++) {%>
+            <li class="rapper">
+                <span><%= info[i].shopName %></span>
+                <span><%= info[i].shopRating %></span>
+                <span><%= info[i].likes %></span>
+                <span class='fa fa-thumbs-up'></span>
+                <span class='fa fa-trash'></span>
+            </li>
+        <% } %>
 
         </ul>
     
         <h2>Add A Coffee Shop:</h2>
     
-        <form action="/addRapper" method="POST">
+        <form action="/addCoffeeShop" method="POST">
             <input type="text" placeholder="Shop Name" name="shopName">
             <input type="text" placeholder="Shop Rating" name="shopRating">
             <input type="submit">

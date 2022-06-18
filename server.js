@@ -22,23 +22,23 @@ app.use(express.json())
 
 
 app.get('/',(request, response)=>{
-    try {
-        response.render('index.ejs')
-        
-    } catch(error) {
-        console.error(error)
-    }
+    db.collection('coffee').find().sort({likes: -1}).toArray()
+    .then(data => {
+        response.render('index.ejs', { info: data })
+    })
+    .catch(error => console.error(error))
 })
 
-// app.post('/addCoffee', (request, response) => {
-//     db.collection('coffee').insertOne({shopName: request.body.shopName,
-//     shopRating: request.body.shopRating, likes: 0})
-//     .then(result => {
-//         console.log('Coffee Added')
-//         response.redirect('/')
-//     })
-//     .catch(error => console.error(error))
-// })
+
+app.post('/addCoffeeShop', (request, response) => {
+    db.collection('coffee').insertOne({shopName: request.body.shopName,
+    shopRating: request.body.shopRating, likes: 0})
+    .then(result => {
+        console.log('Coffee Added')
+        response.redirect('/')
+    })
+    .catch(error => console.error(error))
+})
 
 
 
