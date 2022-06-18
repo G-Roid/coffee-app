@@ -7,7 +7,7 @@ require('dotenv').config()
 
 let db,
     dbConnectionStr = process.env.DB_STRING,
-    dbName = 'coffee'
+    dbName = 'coffeeDatabase'
 
 MongoClient.connect(dbConnectionStr, { useUnifiedTopology: true })
     .then(client => {
@@ -38,6 +38,33 @@ app.post('/addCoffeeShop', (request, response) => {
         response.redirect('/')
     })
     .catch(error => console.error(error))
+})
+
+app.put('/addOneLike', (request, response) => {
+    db.collection('coffee').updateOne({shopName: request.body.shopNameS, shopRating: request.body.shopRateS, likes: request.body.likesS},{
+        $set: {
+            likes:request.body.likesS + 1
+          }
+    },{
+        sort: {_id: -1},
+        upsert: true
+    })
+    .then(result => {
+        console.log('Added One Like')
+        response.json('Like Added')
+    })
+    .catch(error => console.error(error))
+
+})
+
+app.delete('/deleteCoffee', (request, response) => {
+    db.collection('coffee').deleteOne({shopName: request.body.shopNameS})
+    .then(result => {
+        console.log('shop Deleted')
+        response.json('shop Deleted')
+    })
+    .catch(error => console.error(error))
+
 })
 
 
